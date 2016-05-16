@@ -108,8 +108,8 @@ def highlight_faces(image, faces, output_filename):
     im.save(output_filename)
 # [END highlight_faces]
 
-# [START main] 
-def main(input_filename, max_results): #always use 1 for max_results
+# [START main]
+def main(input_filename, output_filename, max_results):
     with open(input_filename, 'rb') as image:
         faces = detect_face(image, max_results)
         #print('Found %s face%s' % (len(faces), '' if len(faces) == 1 else 's'))
