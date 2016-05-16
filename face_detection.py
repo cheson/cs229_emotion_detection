@@ -71,9 +71,17 @@ def detect_face(face_file, max_results=4):
 # [START print_landmarks]
 def print_landmarks(face):
     """prints out landmark results for a face object"""
+    coordinates = list()
     for landmark in face['landmarks']:
         print landmark['type']
-        print landmark['position']
+        print 'x: ' + str(landmark['position']['x'])
+        print 'y: ' + str(landmark['position']['y'])
+        print 'z: ' + str(landmark['position']['z'])
+        coordinates.append(landmark['position']['x'])
+        coordinates.append(landmark['position']['y'])
+        coordinates.append(landmark['position']['z'])
+    print coordinates
+
     #print face['landmarks'][1]
 # [END print_landmarks]
 
