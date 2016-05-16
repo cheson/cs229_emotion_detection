@@ -73,14 +73,15 @@ def print_landmarks(face):
     """prints out landmark results for a face object"""
     coordinates = list()
     for landmark in face['landmarks']:
-        print landmark['type']
-        print 'x: ' + str(landmark['position']['x'])
-        print 'y: ' + str(landmark['position']['y'])
-        print 'z: ' + str(landmark['position']['z'])
+        # print landmark['type']
+        # print 'x: ' + str(landmark['position']['x'])
+        # print 'y: ' + str(landmark['position']['y'])
+        # print 'z: ' + str(landmark['position']['z'])
         coordinates.append(landmark['position']['x'])
         coordinates.append(landmark['position']['y'])
         coordinates.append(landmark['position']['z'])
     print coordinates
+    return coordinates
 
     #print face['landmarks'][1]
 # [END print_landmarks]
@@ -98,7 +99,7 @@ def highlight_faces(image, faces, output_filename):
     im = Image.open(image)
     draw = ImageDraw.Draw(im)
 
-    for face in faces:
+    for face in faces: #assume there is only one face.
         box = [(v.get('x', 0.0), v.get('y', 0.0)) for v in face['fdBoundingPoly']['vertices']]
         draw.line(box + [box[0]], width=5, fill='#00ff00')
         print_landmarks(face)
@@ -111,12 +112,13 @@ def highlight_faces(image, faces, output_filename):
 def main(input_filename, output_filename, max_results):
     with open(input_filename, 'rb') as image:
         faces = detect_face(image, max_results)
-        print('Found %s face%s' % (len(faces), '' if len(faces) == 1 else 's'))
+        #print('Found %s face%s' % (len(faces), '' if len(faces) == 1 else 's'))
 
-        print('Writing to file %s' % output_filename)
+        return print_landmarks(faces[0])
+        #print('Writing to file %s' % output_filename)
         # Reset the file pointer, so we can read the file again
-        image.seek(0)
-        highlight_faces(image, faces, output_filename)
+        #image.seek(0)
+        #highlight_faces(image, faces, output_filename)
 # [END main]
 
 
