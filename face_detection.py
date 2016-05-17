@@ -79,7 +79,6 @@ def print_landmarks(face):
         coordinates.append(landmark['position']['x'])
         coordinates.append(landmark['position']['y'])
         coordinates.append(landmark['position']['z'])
-    print coordinates
     return coordinates
 
     #print face['landmarks'][1]
