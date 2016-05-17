@@ -15,7 +15,6 @@
 # limitations under the License.
 
 """Draws squares around faces in the given image."""
-
 import argparse
 import base64
 
