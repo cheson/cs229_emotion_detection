@@ -84,9 +84,12 @@ def print_landmarks(face):
     #print face['landmarks'][1]
 # [END print_landmarks]
 
-# [START highlight_faces]
-def highlight_faces(image, faces, output_filename):
-    """Draws a polygon around the faces, then saves to output_filename.
+def normalize_landmark(coordinate, x_norm, y_norm):
+    return 0
+
+# [START crop_face]
+def crop_face(image, face, output_filename):
+    """Crops a polygon around the faces, then saves to output_filename.
     Args:
       image: a file containing the image with the faces.
       faces: a list of faces found in the file. This should be in the format
@@ -94,25 +97,32 @@ def highlight_faces(image, faces, output_filename):
       output_filename: the name of the image file to be created, where the faces
           have polygons drawn around them.
     """
+        print output_filename
+
     im = Image.open(image)
-    draw = ImageDraw.Draw(im)
 
-    for face in faces: #assume there is only one face.
-        box = [(v.get('x', 0.0), v.get('y', 0.0)) for v in face['fdBoundingPoly']['vertices']]
-        draw.line(box + [box[0]], width=5, fill='#00ff00')
-        print_landmarks(face)
-
-    del draw
-    im.save(output_filename)
-# [END highlight_faces]
+    box = [(v.get('x', 0.0), v.get('y', 0.0)) for v in face['fdBoundingPoly']['vertices']]
+    corners = box[0] + box[2]
+    im = im.crop(corners)
+    print output_filename
+    im.save('images/' + output_filename)
+    #im.save('out2.jpg', 'JPG')
+    return im
+    #return 0
+# [END crop_face]
 
 # [START main]
 def main(input_filename, output_filename, max_results):
     with open(input_filename, 'rb') as image:
-        faces = detect_face(image, max_results)
-        #print('Found %s face%s' % (len(faces), '' if len(faces) == 1 else 's'))
-
-        return print_landmarks(faces[0])
+        print 0
+        face = detect_face(image, 1)[0] #detects face in original image <- inefficient way to find crop region?
+        print 1
+        face_crop = crop_face(image, face, output_filename) #crop original image to just facial region
+        with open('images/' + output_filename, 'rb') as image_crop: #rerun facial detection on cropped face
+            print 2
+            face = detect_face(image_crop, 1)[0]
+        print 3
+        return print_landmarks(face)
         #print('Writing to file %s' % output_filename)
         # Reset the file pointer, so we can read the file again
         #image.seek(0)
